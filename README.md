@@ -18,13 +18,13 @@ type SignupData struct {
 	AcceptTOS            bool   `json:"acceptTOS"`
 }
 
-func (data *SignupData) ValidateJSON(v *jsonvalidator.Validator) {
-	v.CheckStringMatch2("emailAddress", a.EmailAddress, EmailAddressRE,
+func (d *SignupData) ValidateJSON(v *jsonvalidator.Validator) {
+	v.CheckStringMatch2("emailAddress", d.EmailAddress, EmailAddressRE,
 		"invalidEmailAddress", "invalid email address")
 
-	v.CheckStringLengthMin("password", a.Password, 8)
+	v.CheckStringLengthMin("password", d.Password, 8)
 
-	v.Check("passwordConfirmation", a.PasswordConfirmation == a.Password,
+	v.Check("passwordConfirmation", d.PasswordConfirmation == d.Password,
 		"passwordMismatch", "password confirmation and password do not match")
 
 	v.Check("acceptTOS", d.AcceptTOS, "tosNotAccepted",
