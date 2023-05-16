@@ -9,6 +9,36 @@ Refer to the [Go package
 documentation](https://pkg.go.dev/github.com/galdor/go-json-validator) for
 information about the API.
 
+### Example
+```go
+type SignupData struct {
+	EmailAddress         string `json:"emailAddress"`
+	Password             string `json:"password"`
+	PasswordConfirmation string `json:"password"`
+	AcceptTOS            bool   `json:"acceptTOS"`
+}
+
+func (data *SignupData) ValidateJSON(v *jsonvalidator.Validator) {
+	v.CheckStringMatch2("emailAddress", a.EmailAddress, EmailAddressRE,
+		"invalidEmailAddress", "invalid email address")
+
+	v.CheckStringLengthMin("password", a.Password, 8)
+
+	v.Check("passwordConfirmation", a.PasswordConfirmation == a.Password,
+		"passwordMismatch", "password confirmation and password do not match")
+
+	v.Check("acceptTOS", d.AcceptTOS, "tosNotAccepted",
+		"you must accept terms of services to sign up")
+}
+```
+
+Simply implement `ValidateJSON` for structures that need extra validation, and
+use `jsonvalidation.Unmarshal` to both decode and validate data.
+
+Errors are reported using type `ValidationErrors` which can contain one or
+more validation errors. Each validation error contains a JSON pointer to the
+location of the error and an error code to facilitate error handling.
+
 # Licensing
 Go-json-validator is open source software distributed under the
 [ISC](https://opensource.org/licenses/ISC) license.
