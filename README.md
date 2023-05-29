@@ -1,4 +1,7 @@
 # go-json-validator
+
+**Go-json-validator is now available as part of [go-ejson](https://github.com/galdor/go-ejson).**
+
 ## Introduction
 The go-json-validator library contains tooling to validate JSON data. While
 the standard Go parser will only check basic types, this package lets
